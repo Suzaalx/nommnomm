@@ -8,3 +8,6 @@
   padding: 0;
 }
 
+.show{
+  @apply flex text-black;
+}

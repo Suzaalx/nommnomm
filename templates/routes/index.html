@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link
+    rel="icon"
+    type="image/png"
+    sizes="32x32"
+    href="../images/favicon-32x32.png"
+  />
+  <script src="https://kit.fontawesome.com/754d4aae16.js" crossorigin="anonymous"></script>
+  
+    <title>NomNom</title>
+    <link rel="stylesheet" href="{{url_for('static',filename='css/output.css')}}">
+
+</head>
+<body class=" border-box bg-[#F2EFEA]">
+    
+    <header class="bg-[url('https://images.unsplash.com/photo-1494253109108-2e30c049369b?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')] bg-no-repeat bg-top max-w-full bg-cover max-h-[70vh] relative text-white ">
+    {% include 'components/header.html' %}
+    <div class="flex justify-center items-center h-[70vh] w-screen">
+        <div class="text-center absolute top-1/4">
+          <h1 class="text-4xl md:text-6xl font-bold font-Franunces uppercase tracking-wide mt-6">
+            We are creatives
+          </h1>
+        </div>
+        <div class="absolute bottom-7">
+          <svg width="38" height="260" xmlns="http://www.w3.org/2000/svg">
+            <g
+              stroke="#FFF"
+              stroke-width="6"
+              fill="none"
+              fill-rule="evenodd"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              z-index="1"
+            >
+              <path d="M18 3v100M3 95.484l15 15 15-15" />
+            </g>
+          </svg>
+        </div>
+    </div>
+    
+ 
+    
+</header>
+
+<section class="container mx-auto px-8 mt-8 z-100 lg:px-40">
+    <div class="grid grid-cols-1 gap-8 p-4">
+        {% for recipe in recipes %}
+            <!-- <div class="bg-[#E5ECE9] p-4 rounded-lg shadow-md">
+                <p class="text-pretty font-sans text-lg">
+                    <a href="{{ url_for('profile', user_id=recipe.author.id)}}" class="text-primary-600 dark:text-primary-500 hover:underline transition duration-300">
+                        <i class="fas fa-user text-primary-600 dark:text-primary-500"></i>
+                        {{ recipe.author.name }}
+                    </a>
+                </p>
+                <div class="my-2">
+                    <a href="{{url_for('recipe', recipe_id=recipe.id)}}" class="text-primary-600 dark:text-primary-500 hover:underline transition duration-300">
+                        <h3 class="text-2xl font-bold text-gray-800 hover:text-primary-600 dark:hover:text-primary-500 transition duration-300">
+                            {{ recipe.title }}
+                        </h3>
+                    </a>
+                    <p class="text-gray-600 dark:text-gray-400 text-lg mb-2">
+                        {{ recipe.subtitle }}
+                    </p>
+                    <div class="flex items-center mb-2">
+                        <i class="fas fa-clock text-primary-600 dark:text-primary-500"></i>
+                        <p class="ml-2">{{ recipe.cooking_time }} mins</p>
+                    </div>
+                    <div class="flex items-center mb-2">
+                        <i class="fas fa-fire text-primary-600 dark:text-primary-500"></i>
+                        <p class="ml-2">{{ recipe.difficulty_level }}</p>
+                    </div>
+                    <p class="text-gray-700 dark:text-gray-300">{{ recipe.ingredients[:150] }}{% if recipe.ingredients|length > 150 %}...{% endif %}</p>
+                    <a href="{{url_for('recipe', recipe_id=recipe.id)}}" class="text-primary-600 dark:text-primary-500 hover:underline transition duration-300">
+                        Read More
+                    </a>
+                </div>
+            </div> -->
+            <div class="grid md:grid-rows-1 lg:grid-cols-2 place-items-center">
+                <div class="md:order-first lg:order-last overflow-hidden w-full">
+                  <img
+                    src="{{recipe.image}}"
+                    alt=""
+                    class="w-full overflow-hidden object-cover rounded-lg shadow-lg"
+                  />
+                </div>
+                <div class="m-auto py-8 px-4 ">
+                  <div class="text-left mx-12">
+                    <p class="text-pretty font-sans text-lg">
+                        <a href="{{ url_for('profile', user_id=recipe.author.id)}}" class="text-primary-600 dark:text-primary-500 hover:underline transition duration-300">
+                            <i class="fas fa-user text-primary-600 dark:text-primary-500"></i>
+                            {{ recipe.author.name }}
+                        </a>
+                    </p>
+                    <h1 class="text-5xl font-fraunces font-extrabold mt-6">
+                        {{ recipe.title }}
+                    </h1>
+                    <p class="text-gray-600 dark:text-gray-400 text-lg mb-2">
+                        {{ recipe.subtitle }}
+                    </p>
+                    <div class="flex items-center mb-2">
+                        <i class="fas fa-clock text-primary-600 dark:text-primary-500"></i>
+                        <p class="ml-2">{{ recipe.cooking_time }} mins</p>
+                    </div>
+                    <div class="flex items-center mb-2">
+                        <i class="fas fa-fire text-primary-600 dark:text-primary-500"></i>
+                        <p class="ml-2">{{ recipe.difficulty_level }}</p>
+                    </div>
+
+                    <p class="text-gray-700 ">{{ recipe.ingredients[:150] }}{% if recipe.ingredients|length > 150 %}...{% endif %}</p>
+                    <a href="{{url_for('recipe', recipe_id=recipe.id)}}" class="more after:hover:bg-soft-red">Read More</a>
+                  </div>
+                </div>
+              </div>
+        {% endfor %}
+    </div>
+</section>
+
+
+{% include 'components/footer.html' %}
+
+<script src="{{url_for('static',filename='js/index.js')}}"></script>
+</body>
+</html>
+

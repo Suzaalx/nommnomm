@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NomNom</title>
+    <link rel="stylesheet" href="{{url_for('static',filename='css/output.css')}}">
+    <script src="https://kit.fontawesome.com/754d4aae16.js" crossorigin="anonymous"></script>
+  
+
+
+</head>
+<body>
+<!-- navbar for desktop -->
+<nav class=" px-8 lg:px-40 ">
+    <div class=" flex text-center bg-opacity-70 justify-between  items-center">
+        <div class=" text-xl lg:flex  md:text-2xl lg:text-4xl z-20 hidden ">
+            <a href="/">NomNom</a>
+            <ul class=" lg:flex text-xl p-2 ml-8 gap-4">
+                <li><a href="/">Home</a></li>
+                <li><a href="/new-recipe">New Recipes</a></li>
+                <li><a href="/popular">Popular</a></li>
+            </ul>
+        </div>
+        
+    
+        <div class="hidden lg:flex">
+            <ul class=" lg:flex gap-4 text-xl ">
+                {% if not current_user.is_authenticated %}
+                <li><a href="/register">signup</a></li>
+                <li><a href="/login">signin</a></li>
+                {% else %}
+                <li><a href="{{ url_for('profile', user_id=current_user.id)}}">user</a></li>
+                <li><a href="/logout">logout</a></li>
+                {% endif %}
+            </ul>
+        </div>
+     
+        </div>
+       
+    </div>
+    
+    
+</nav>
+
+<!-- navbar for mobile -->
+<div class="lg:hidden ">
+    <div class="flex justify-between  mx-2 pt-4 px-8">
+        <div>
+            <a href="/">NomNom</a>
+        </div>
+        <div>
+            <button id="handle-nav" class="hamburger z-50"><i class="text-2xl fa-solid fa-bars"></i></button>
+        </div>
+    </div>
+</div>
+<div class="mobile-nav hidden bg-white w-full h-60vh fixed top-0 left-0 z-20">
+    <div class="flex flex-col justify-center items-center h-70vh w-full">
+        
+        <button id="close-nav" class="hamburger z-50 absolute top-4 right-10"><i class="text-2xl fa-solid fa-times"></i></button>
+        <ul class="flex flex-col justify-center items-center gap-8 text-2xl w-full h-full m-4">
+            <li><a href="/">Home</a></li>
+            <li><a href="/new-recipe">New Recipes</a></li>
+            <li><a href="/popular">Popular</a></li>
+            {% if not current_user.is_authenticated %}
+            <li><a href="/register">signup</a></li>
+            <li><a href="/login">signin</a></li>
+            {% else %}
+            <li><a href="{{ url_for('profile', user_id=current_user.id)}}">user</a></li>
+            <li><a href="/logout">logout</a></li>
+            {% endif %}
+        </ul>
+
+    </div>
+</div>
+
+<script src="{{url_for('static',filename='js/index.js')}}"></script>

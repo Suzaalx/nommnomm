@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NomNom</title>
+    <link rel="stylesheet" href="{{url_for('static',filename='css/output.css')}}">
+    <style>
+        .instruction {
+            word-wrap: break-word;
+            white-space: pre-line;
+            letter-spacing: 1px; /* Adjust the value based on your preference for character spacing */
+            margin-bottom: 1em; /* Adjust the value based on your preference for sentence spacing */
+        }
+    </style>
+
+</head>
+<body class="border-box border-2 bg-[#fdfae5]">
+    {% include 'components/header.html' %}
+    <section>
+        <h2 class="text-xl lg:text-2xl font-bold">{{recipe.title}}</h2>
+
+    <div class=" lg:flex-row flex-col flex justify-evenly items-center relative gap-4 mx-4 md:mx-20 lg:mx-40">
+        <div class=" flex lg:flex-col " >
+            <div class=" flex-shrink-0 lg:h-1/2 w-1/2 lg:w-auto">
+                <img src="{{recipe.image}}" alt="" class=" overflow-hidden object-contain max-w-full max-h-96 rounded-xl "> 
+            </div>
+            <!-- Content for the first container -->
+            <div class=" flex-shrink-1 px-2 lg:h-1/2 w-1/2 lg:w-auto">
+
+                <p class="text-gray-500 dark:text-gray-400 lg:mb-2">{{recipe.subtitle}}</p>
+                <p class="text-gray-500 dark:text-gray-400 lg:mb-2">Cooking Time: {{recipe.cooking_time}} minutes</p>
+                <p class="text-gray-500 dark:text-gray-400 lg:mb-2">Difficulty Level: {{recipe.difficulty_level}}</p>
+                <p class="text-gray-500 dark:text-gray-400 lg:mb-2">Ingredients: {{recipe.ingredients}}</p>
+                
+            </div>
+        </div>
+        <div class=" flex-wrap ">
+            <!-- Content for the second container -->
+            
+            <p class=" text-xl instruction xl:text-2xl text-balance">
+                Instruction: {{recipe.instructions}}
+            </p>
+            <p class="text-gray-500 dark:text-gray-400 lg:mb-2">Author: {{recipe.author.name}}</p>
+            <p class="text-gray-500 dark:text-gray-400 lg:mb-2">Created at: {{recipe.created_at}}</p>
+            <p class="text-gray-500 dark:text-gray-400 lg:mb-2">Updated at: {{recipe.updated_at}}</p>
+            {% if current_user.is_authenticated %}
+            {% if current_user.id == recipe.author.id %}
+            <div class="flex justify-around">
+
+                <a href="/edit_recipe/{{recipe.id}}" class="button flex justify-center items-center px-4 py-2 cursor-pointer border-none border-2 bg-stone-200 rounded-xl hover:bg-blue-600">
+                    <svg class="svg-icon" fill="none" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><g stroke="#000000" stroke-linecap="round" stroke-width="2"><path d="m20 20h-16"></path><path clip-rule="evenodd" d="m14.5858 4.41422c.781-.78105 2.0474-.78105 2.8284 0 .7811.78105.7811 2.04738 0 2.82843l-8.28322 8.28325-3.03046.202.20203-3.0304z" fill-rule="evenodd"></path></g></svg>
+                    <span class="lable">Edit</span>
+                </a>
+                
+                  <a href="/delete_recipe/{{recipe.id}}" class="noselect flex border-none bg-red-600 px-4 py-2 hover:bg-red-900 rounded-xl"><span class="text">Delete</span><span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M24 20.188l-8.315-8.209 8.2-8.282-3.697-3.697-8.212 8.318-8.31-8.203-3.666 3.666 8.321 8.24-8.206 8.313 3.666 3.666 8.237-8.318 8.285 8.203z"></path></svg></span></a>
+            </div>
+            {% endif %}
+            {% endif %}
+            
+        </div>
+    </div>
+
+
+  <div class="py-8 lg:py-16 mx-auto px-8  lg:px-80"> 
+    <div class=" text-2xl font-bold py-4 mb-4 ">
+        Discussion
+    </div>
+    {% if not current_user.is_authenticated %}
+    <div class="text-gray-500 dark:text-gray-400 mb-4">
+        <a href="/login">Sign in</a> or <a href="/register">sign up</a> to post a comment.
+    </div>
+    {% endif %}
+    {% if current_user.is_authenticated %}
+
+    <form action="{{ url_for('recipe', recipe_id=recipe.id) }}" method="post" class="mb-6">
+              <div class="py-2 px-4 mb-4 bg-white rounded-lg rounded-t-lg border border-gray-200 ">
+                  <label for="comment" class="sr-only">Your comment</label>
+                  <textarea name="comment" id="comment" rows="6"
+                      class="px-0 w-full text-sm text-gray-900 border-0 focus:ring-0 focus:outline-none "
+                      placeholder="Write a comment..." required></textarea>
+              </div>
+              <button type="submit"
+                  class="inline-flex items-center my-2 px-6 py-4 text-xs font-medium text-center bg-blue-500 rounded-2xl focus:ring-4  text-black border-none">
+                  Post comment
+              </button>
+     </form>
+        {% endif %}
+
+
+        {% for c in recipe.comments %}    
+    <div class=" comment-list">
+        <div class="name">
+            <div class="flex items-center">
+                <div class="flex-shrink-0">
+                    <img class="h-10 w-10 rounded-full"
+                        src="https://images.unsplash.com/photo-1612837017391-5e9b5f0b0b0b?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Y29tbWVudCUyMGJhY2tncm91bmQlMjBmb3IlMjBzaW5jZSUyMGZvciUyMGJ1c2luZXNzJTIwY2hhbGxlbmdlJTIwY29tbWVudCUyMGJhY2tncm91bmQlMjBmb3IlMjBzaW5jZSUyMGZvciUyMGJ1c2luZXNzJTIwY2hhbGxlbmdlJTIwY29tbWVudCUyMGJhY2tncm91bmQlMjBmb3IlMjBzaW5jZSUyMGZvciUyMGJ1c2luZXNzJTIwY2hhbGxlbmdlJTIwY29tbWVudCUyMGJhY2tncm91bmQlMjBmb3IlMjBzaW5jZSUyMGZvciUyMGJ1c2luZXNzJTIwY2hhbGxlbmdlJTIwY29tbWVudCUyMGJhY2tncm91bmQlMjBmb3IlMjBzaW5jZSUyMGZvciUyMGJ1c2luZXNzJTIwY2hhbGxlbmdlJTIwY29tbWVudCUyMGJhY2tncm91bmQlMjBmb3IlMjBzaW5jZSUyMGZvciUyMGJ1c2luZXNzJTIwY2hhbGxlbmdlJTIwY29tbWVudCUyMGJhY2tncm91bmQlMj">
+                </div>
+                <div class="ml-4 flex gap-4">
+                    <div class="text-sm font-medium text-gray-900">
+                        {{c.user.name}}
+                        
+                    </div>
+                    <div class="text-sm text-gray-500 ">
+                        1d
+                    </div>
+                </div>
+
+        </div>
+        <div class="comment ml-14">
+            <p class="text-gray-700 dark:text-gray-400 mb-2">{{c.comment}}</p>
+        </div>
+
+    </div>
+    {% endfor %}
+    
+
+  </div>
+    
+
+    <div class="grid md:grid-rows-1 lg:grid-cols-2 place-items-center">
+        <div class="md:order-first lg:order-last overflow-hidden w-full">
+          <img
+            src="{{recipe.image}}"
+            alt=""
+            class="w-full overflow-hidden object-cover"
+          />
+        </div>
+        <div class="m-auto py-8 px-4">
+          <div class="text-left mx-12">
+            <h1 class="text-5xl font-fraunces font-extrabold mt-6">
+              Transform your brand
+            </h1>
+            <p class="mt-6 font-barlow text-xl text-dark-grayish-blue">
+              We are a full-service creative agency specializing in helping
+              brands grow fast. Engage your clients through compelling visuals
+              that do most of the marketing for you.
+            </p>
+            <button class="more after:hover:bg-soft-red">Learn More</button>
+          </div>
+        </div>
+      </div>
+    
